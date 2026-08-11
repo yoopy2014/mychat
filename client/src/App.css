@@ -257,3 +257,75 @@ body {
 .send-btn:hover {
   background: #05b34c;
 }
+/* ルーム選択エリア */
+.room-selection-area {
+  width: 100%;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.room-selection-area p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.preset-rooms {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.room-chip {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.room-chip.selected {
+  background-color: #06c755;
+  color: white;
+  border-color: #06c755;
+  font-weight: bold;
+}
+
+.join-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #06c755;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* チャットヘッダー内のルーム切り替え */
+.room-switcher select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* システムメッセージ（入退室） */
+.system-message {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.system-message span {
+  background-color: rgba(0, 0, 0, 0.15);
+  color: white;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
