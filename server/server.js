@@ -26,7 +26,6 @@ io.on('connection', (socket) => {
 
   // ルーム参加（過去ログの取得）
   socket.on('join_room', async ({ roomId, username }) => {
-    // 以前のルームから退室
     if (currentRoom && currentRoom !== roomId) {
       socket.leave(currentRoom);
     }
@@ -35,7 +34,7 @@ io.on('connection', (socket) => {
     currentUser = username;
     socket.join(roomId);
 
-    // ★ Supabase から最新100件のログを取得
+    // Supabase から最新100件のログを取得
     if (supabase) {
       const { data, error } = await supabase
         .from('messages')
@@ -45,7 +44,6 @@ io.on('connection', (socket) => {
         .limit(100);
 
       if (!error && data) {
-        // 取得したデータをクライアント形式に変換して送信
         const history = data.map((msg) => ({
           id: msg.id,
           roomId: msg.room_id,
@@ -71,7 +69,6 @@ io.on('connection', (socket) => {
       timestamp: timeStr,
     };
 
-    // 入室メッセージも Supabase に保存
     if (supabase) {
       await supabase.from('messages').insert([
         { room_id: roomId, author: 'システム', message: `${username} が入室しました。`, timestamp: timeStr }
@@ -90,7 +87,6 @@ io.on('connection', (socket) => {
       timestamp: timeStr,
     };
 
-    // ★ Supabase データベースへメッセージを直接保存
     if (supabase) {
       await supabase.from('messages').insert([
         {
