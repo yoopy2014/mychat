@@ -1,0 +1,259 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ログイン画面 */
+.login-screen {
+  max-width: 360px;
+  margin: 80px auto;
+  padding: 32px 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-screen h2 {
+  margin: 0 0 8px 0;
+  color: #06c755;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.login-screen input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-screen input:focus {
+  border-color: #06c755;
+}
+
+.login-screen button {
+  width: 100%;
+  padding: 12px;
+  background-color: #06c755;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-screen button:hover {
+  background-color: #05b34c;
+}
+
+/* チャットコンテナ */
+.chat-container {
+  max-width: 440px;
+  height: 90vh;
+  margin: 20px auto;
+  background: #7294c2;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ヘッダー */
+.chat-header {
+  background: #1e2a38;
+  color: white;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.user-info {
+  font-size: 12px;
+  color: #a0aec0;
+}
+
+/* メッセージエリア */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* メッセージ行 */
+.message-row {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+}
+
+.message-row.me {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.message-row.other {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.author {
+  font-size: 11px;
+  color: #ffffff;
+  margin-bottom: 3px;
+  margin-left: 2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.bubble-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.message-row.me .bubble-wrapper {
+  flex-direction: row-reverse;
+}
+
+.bubble {
+  padding: 9px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-row.me .bubble {
+  background: #85e249;
+  color: #000000;
+  border-top-right-radius: 4px;
+}
+
+.message-row.other .bubble {
+  background: #ffffff;
+  color: #000000;
+  border-top-left-radius: 4px;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #ffffff;
+  opacity: 0.85;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.typing-status {
+  font-size: 12px;
+  color: #ffffff;
+  font-style: italic;
+  opacity: 0.9;
+  padding: 4px 8px;
+}
+
+/* スタンプメニュー */
+.stamp-picker {
+  background: #f7f9fa;
+  border-top: 1px solid #e1e8ed;
+  padding: 8px 12px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.stamp-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: transform 0.1s, background-color 0.2s;
+}
+
+.stamp-btn:hover {
+  background-color: #e2e8f0;
+  transform: scale(1.15);
+}
+
+/* 入力エリア */
+.chat-input-area {
+  padding: 10px 12px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #e1e8ed;
+}
+
+.toggle-stamp-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.toggle-stamp-btn:hover {
+  background-color: #f0f2f5;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 9px 14px;
+  border: 1px solid #e1e8ed;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  background-color: #f7f9fa;
+}
+
+.chat-input-area input:focus {
+  background-color: #ffffff;
+  border-color: #06c755;
+}
+
+.send-btn {
+  padding: 8px 16px;
+  background: #06c755;
+  color: white;
+  border: none;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.send-btn:hover {
+  background: #05b34c;
+}
