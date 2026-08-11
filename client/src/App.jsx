@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import './App.css';
 
-const socket = io('https://chat-server-6t4i.onrender.com', {
+// Renderで発行されたバックエンドURLを設定
+const SOCKET_URL = 'https://chat-server-6t4i.onrender.com';
+
+const socket = io(SOCKET_URL, {
   autoConnect: false,
 });
 
