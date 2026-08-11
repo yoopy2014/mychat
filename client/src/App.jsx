@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import './App.css';
 
-// Renderで発行されたバックエンドURLを設定
 const SOCKET_URL = 'https://chat-server-6t4i.onrender.com';
 
 const socket = io(SOCKET_URL, {
@@ -10,10 +9,12 @@ const socket = io(SOCKET_URL, {
 });
 
 const STAMPS = ['😊', '👍', '❤️', '🎉', '🔥', '😭', '😎', '🙏'];
+const DEFAULT_ROOMS = ['雑談', 'ゲーム', 'プログラミング'];
 
 export default function App() {
   const [username, setUsername] = useState('');
-  const [roomId, setRoomId] = useState('トークルーム');
+  const [roomId, setRoomId] = useState('雑談');
+  const [customRoom, setCustomRoom] = useState('');
   const [isJoined, setIsJoined] = useState(false);
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
@@ -43,11 +44,14 @@ export default function App() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messageList]);
 
-  const joinRoom = () => {
-    if (username.trim()) {
-      socket.emit('join_room', { roomId, username });
-      setIsJoined(true);
-    }
+  const handleJoinRoom = (targetRoom) => {
+    const roomToJoin = targetRoom || roomId;
+    if (!username.trim() || !roomToJoin.trim()) return;
+
+    setMessageList([]); // ルーム切替時にメッセージ履歴をクリア
+    socket.emit('join_room', { roomId: roomToJoin, username });
+    setRoomId(roomToJoin);
+    setIsJoined(true);
   };
 
   const sendMessage = (textToSend) => {
@@ -79,9 +83,38 @@ export default function App() {
           placeholder="表示名を入力"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && joinRoom()}
         />
-        <button onClick={joinRoom}>入室する</button>
+
+        <div className="room-selection-area">
+          <p>トークルームを選択</p>
+          <div className="preset-rooms">
+            {DEFAULT_ROOMS.map((room) => (
+              <button
+                key={room}
+                className={`room-chip ${roomId === room && !customRoom ? 'selected' : ''}`}
+                onClick={() => {
+                  setRoomId(room);
+                  setCustomRoom('');
+                }}
+              >
+                #{room}
+              </button>
+            ))}
+          </div>
+          <input
+            type="text"
+            placeholder="または好きなルーム名を入力"
+            value={customRoom}
+            onChange={(e) => {
+              setCustomRoom(e.target.value);
+              setRoomId(e.target.value);
+            }}
+          />
+        </div>
+
+        <button className="join-btn" onClick={() => handleJoinRoom()}>
+          入室する
+        </button>
       </div>
     );
   }
@@ -89,13 +122,40 @@ export default function App() {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h3>{roomId}</h3>
-        <span className="user-info">ログイン中: {username}</span>
+        <div className="header-info">
+          <h3>#{roomId}</h3>
+          <span className="user-info">ユーザー: {username}</span>
+        </div>
+        <div className="room-switcher">
+          <select
+            value={roomId}
+            onChange={(e) => handleJoinRoom(e.target.value)}
+          >
+            {DEFAULT_ROOMS.map((room) => (
+              <option key={room} value={room}>
+                #{room}
+              </option>
+            ))}
+            {!DEFAULT_ROOMS.includes(roomId) && (
+              <option value={roomId}>#{roomId}</option>
+            )}
+          </select>
+        </div>
       </div>
 
       <div className="chat-messages">
         {messageList.map((msg) => {
           const isMe = msg.author === username;
+          const isSystem = msg.author === 'システム';
+
+          if (isSystem) {
+            return (
+              <div key={msg.id} className="system-message">
+                <span>{msg.message}</span>
+              </div>
+            );
+          }
+
           return (
             <div key={msg.id} className={`message-row ${isMe ? 'me' : 'other'}`}>
               {!isMe && <div className="author">{msg.author}</div>}
@@ -131,7 +191,9 @@ export default function App() {
           onChange={handleInputChange}
           onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
-        <button className="send-btn" onClick={() => sendMessage()}>送信</button>
+        <button className="send-btn" onClick={() => sendMessage()}>
+          送信
+        </button>
       </div>
     </div>
   );
